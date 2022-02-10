@@ -48,6 +48,12 @@ export const games = [
     url: 'https://www.gabtoschi.com/letreco/',
   },
   {
+    name: 'Charada',
+    lang: 'pt',
+    country: 'BR',
+    url: 'https://charada.app/',
+  },
+  {
     name: 'Palavra do dia',
     lang: 'pt',
     country: 'PT',

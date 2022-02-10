@@ -19,6 +19,9 @@ export const games = [
     name: 'Le Mot - Wordle en français',
     lang: 'fr',
     url: 'https://wordle.louan.me/',
+    resetTime: {
+      timeZone: 'Europe/Berlin',
+    },
   },
   {
     name: 'Wordle (ES)',

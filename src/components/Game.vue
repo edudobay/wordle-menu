@@ -1,9 +1,15 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineEmits, defineProps } from 'vue';
+import { useTimer } from '../utils/timer';
 
-defineProps({
+const props = defineProps({
   game: Object,
 });
+
+const emit = defineEmits(['markDone']);
+const markDone = () => emit('markDone');
+
+const timeLeft = useTimer(props.game.nextReset);
 </script>
 
 <template>
@@ -18,6 +24,13 @@ defineProps({
         <span class="game-title">{{ game.name }}</span>
       </span>
     </a>
+    <template v-if="game.done">
+      ✅
+    </template>
+    <template v-else>
+      <button @click="markDone">Done for today</button>
+    </template>
+    {{ timeLeft }} left
   </li>
 </template>
 

@@ -1,9 +1,12 @@
 <script setup>
 import { useStore } from '../store';
 import Game from './Game.vue';
+import { storeToRefs } from 'pinia';
 
 const store = useStore();
-const games = store.games;
+const { games } = storeToRefs(store);
+const markDone = store.markDone;
+
 </script>
 
 <template>
@@ -12,6 +15,7 @@ const games = store.games;
       v-for="game of games"
       :key="game.url"
       :game="game"
+      @markDone="markDone(game)"
     />
   </ul>
 </template>

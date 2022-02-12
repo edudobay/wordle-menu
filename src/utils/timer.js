@@ -1,30 +1,65 @@
-import { computed, onMounted, onUnmounted, ref } from 'vue';
 import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import countdown from 'countdown';
 
-dayjs.extend(duration);
+class SwitchableTimer {
+  constructor(callback, interval) {
+    this.interval = interval;
+    this.callback = callback;
+    this.timer = null;
+  }
+
+  start() {
+    if (this.timer != null) return;
+    this.timer = setInterval(this.callback, this.interval);
+  }
+
+  stop() {
+    if (this.timer == null) return;
+    clearInterval(this.timer);
+    this.timer = null;
+  }
+}
 
 /**
- * @param {dayjs.Dayjs} resetTime
+ * @param {number} value
+ * @param {"minute"|"second"|"millisecond"} unit
+ * @param {number} threshold
+ * @return {boolean}
  */
-export function useTimer(resetTime) {
-  const timeLeft = ref();
+function closeToZero(value, unit, threshold) {
+  const max = {
+    minute: 60,
+    second: 60,
+    millisecond: 1000,
+  }[unit];
 
-  onMounted(() => {
-    const timer = countdown(
-      (timespan) => {
-        timeLeft.value = timespan;
-      },
-      resetTime.toDate(),
-      countdown.HOURS | countdown.MINUTES,
-      1
-    )
+  const half = Math.ceil(max / 2);
+  return Math.abs((value + half) % max - half) < threshold;
+}
 
-    onUnmounted(() => {
-      clearInterval(timer);
-    });
-  });
+export class Timer {
+  /**
+   * @param {function(dayjs.Dayjs)} callback
+   */
+  constructor(callback) {
+    /** @param {dayjs.Dayjs} now */
+    const tick = (now) => {
+      callback(now)
 
-  return computed(() => timeLeft.value?.toString());
+      if (closeToZero(now.millisecond(), 'millisecond', 100) && closeToZero(now.second(), 'second', 1)) {
+        this.minuteTimer.start();
+      } else {
+        const remainingMs = now.endOf('minute').diff(now, 'millisecond')
+        setTimeout(ticker, remainingMs);
+        this.minuteTimer.stop();
+      }
+    }
+
+    const ticker = () => tick(dayjs());
+    this.minuteTimer = new SwitchableTimer(ticker, 60000);
+    ticker();
+  }
+
+  dispose() {
+    this.minuteTimer.stop();
+  }
 }

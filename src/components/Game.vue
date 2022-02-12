@@ -1,7 +1,9 @@
 <script setup>
-import { defineEmits, defineProps } from 'vue';
-import { useTimer } from '../utils/timer';
+import { computed, defineEmits, defineProps } from 'vue';
+import { useStore } from '../store';
+import countdown from 'countdown';
 
+const store = useStore()
 const props = defineProps({
   game: Object,
 });
@@ -9,7 +11,12 @@ const props = defineProps({
 const emit = defineEmits(['markDone']);
 const markDone = () => emit('markDone');
 
-const timeLeft = useTimer(props.game.nextReset);
+const timeLeft = computed(() => countdown(
+  store.now,
+  props.game.nextReset,
+  countdown.HOURS | countdown.MINUTES,
+  1
+).toString());
 </script>
 
 <template>

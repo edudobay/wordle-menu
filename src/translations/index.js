@@ -1,6 +1,7 @@
 import { createI18n } from 'vue-i18n';
 import messagesEn from './messages-en';
 import { nextTick } from 'vue';
+import countdownTranslation from './countdownTranslation';
 
 export const locales = {
   'en': 'English',
@@ -66,5 +67,7 @@ export default {
     app.provide('setLanguage', async (locale) => {
       return setLanguage(i18n, locale);
     });
+
+    countdownTranslation.init(i18n);
   },
 };

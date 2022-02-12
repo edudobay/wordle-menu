@@ -255,6 +255,11 @@ braces@^3.0.1:
   dependencies:
     fill-range "^7.0.1"
 
+countdown@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/countdown/-/countdown-2.6.0.tgz#677fb8e3a9d4cc4e76415901ba253b518af34177"
+  integrity sha1-Z3+446nUzE52QVkBuiU7UYrzQXc=
+
 csstype@^2.6.8:
   version "2.6.19"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.19.tgz#feeb5aae89020bb389e1f63669a5ed490e391caa"

@@ -50,9 +50,31 @@ function timerOptions() {
   return options;
 }
 
+class GameStatusStorage {
+  constructor() {
+    this.storage = window.localStorage;
+  }
+
+  getStatusForGame(id) {
+    const status = JSON.parse(this.storage.getItem(`gameStatus:${id}`) || '{}');
+    if (status.doneExpires) {
+      status.doneExpires = dayjs(status.doneExpires);
+    }
+    return status;
+  }
+
+  saveStatus(id, status) {
+    this.storage.setItem(`gameStatus:${id}`, JSON.stringify(status));
+  }
+}
+
+const storage = new GameStatusStorage();
+
 export const useStore = defineStore('main', {
   state: () => ({
-    gameStatus: Object.fromEntries(gameIds.map((id) => [id, {}])),
+    gameStatus: Object.fromEntries(gameIds.map(
+      (id) => [id, storage.getStatusForGame(id)]
+    )),
     now: dayjs(),
   }),
   getters: {
@@ -78,9 +100,14 @@ export const useStore = defineStore('main', {
       ));
     },
     markDone(game) {
-      // TODO: Persist in local storage
-      this.gameStatus[game.url].done = true;
-      this.gameStatus[game.url].doneExpires = game.nextReset;
+      this.setGameStatus(game.url, {
+        done: true,
+        doneExpires: game.nextReset,
+      });
+    },
+    setGameStatus(id, status) {
+      status = Object.assign(this.gameStatus[id], status);
+      storage.saveStatus(id, status);
     },
     updateTime(now) {
       this.now = now;

@@ -19,14 +19,13 @@ export const games = [
     name: 'Le Mot - Wordle en français',
     lang: 'fr',
     url: 'https://wordle.louan.me/',
-    resetTime: {
-      timeZone: 'Europe/Berlin',
-    },
+    resetTime: { timeZone: 'Europe/Berlin' },
   },
   {
     name: 'Wordle (ES)',
     lang: 'es',
     url: 'https://wordle.danielfrg.com/',
+    resetTime: { timeZone: 'America/New_York' },
   },
   {
     name: 'PAR🇮🇹LE',
@@ -37,6 +36,7 @@ export const games = [
     name: 'Szó reggelt!',
     lang: 'hu',
     url: 'https://jealousmarkup.xyz/szofejto/',
+    resetTime: { localTime: 4 * 60 }, // Resets at 4:00, local time
   },
   {
     name: 'Termo',
@@ -66,6 +66,7 @@ export const games = [
     name: 'Wordle (RU)',
     lang: 'ru',
     url: 'https://wordle.belousov.one/',
+    resetTime: { timeZone: 'UTC' },
   },
   {
     name: 'Wordle',

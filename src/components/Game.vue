@@ -32,12 +32,12 @@ const timeLeft = computed(() => countdown(
       </span>
     </a>
     <template v-if="game.done">
-      ✅
+      ✅ {{ $t("game.next_game_in", { timeLeft }) }}
     </template>
     <template v-else>
       <button @click="markDone">{{ $t("game.done_for_today") }}</button>
+      {{ $t("game.time_left", { timeLeft }) }}
     </template>
-    {{ $t("game.time_left", { timeLeft }) }}
   </li>
 </template>
 

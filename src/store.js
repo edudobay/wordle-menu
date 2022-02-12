@@ -38,22 +38,31 @@ export const useStore = defineStore('main', {
     now: dayjs(),
   }),
   getters: {
-    games: (state) => games.map((game) => ({
-      ...game,
-      ...state.gameStatus[game.url],
-      nextReset: calculateNextReset(game, state.now),
-    })),
+    games: (state) => games.map((game) => {
+      const gameStatus = state.gameStatus[game.url];
+      const nextReset = calculateNextReset(game, state.now);
+      const doneExpires = gameStatus.doneExpires;
+      const done = gameStatus.done && doneExpires != null && ! doneExpires.isBefore(nextReset);
+
+      return {
+        ...game,
+        ...gameStatus,
+        nextReset,
+        done,
+      };
+    }),
   },
   actions: {
     startTimer() {
-      return markRaw(new Timer((now) => {
-        this.now = now;
-      }));
+      return markRaw(new Timer((now) => this.updateTime(now)));
     },
     markDone(game) {
-      // TODO: Should reset automatically at game reset time
       // TODO: Persist in local storage
       this.gameStatus[game.url].done = true;
+      this.gameStatus[game.url].doneExpires = game.nextReset;
     },
+    updateTime(now) {
+      this.now = now;
+    }
   },
 })

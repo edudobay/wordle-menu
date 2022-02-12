@@ -10,7 +10,7 @@ const markDone = store.markDone;
 </script>
 
 <template>
-  <ul>
+  <ul class="game-list">
     <Game
       v-for="game of games"
       :key="game.url"
@@ -24,5 +24,9 @@ const markDone = store.markDone;
 <style scoped>
 :deep(a:link) {
   text-decoration: none;
+}
+
+.game-list {
+  margin: 0.5em 0;
 }
 </style>

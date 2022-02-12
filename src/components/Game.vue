@@ -20,30 +20,58 @@ const timeLeft = computed(() => countdown(
 </script>
 
 <template>
-  <li>
-    <a :href="game.url">
-      <span class="game-item">
-        <span
-          class="lang-code"
-        >
-          {{ game.lang }}
+  <li class="game-container">
+    <div class="game-main">
+      <a class="game-name-link" :href="game.url">
+        <div class="game-name">
+          <span
+            class="lang-code"
+          >
+            {{ game.lang }}
+          </span>
+          <span class="game-title">{{ game.name }}</span>
+        </div>
+      </a>
+      <span class="game-actions-main">
+        <span v-if="game.done">
+          ✅
         </span>
-        <span class="game-title">{{ game.name }}</span>
+        <button
+          v-if="!game.done"
+          @click="markDone"
+        >
+          {{ $t("game.done_for_today") }}
+        </button>
       </span>
-    </a>
-    <template v-if="game.done">
-      ✅ {{ $t("game.next_game_in", { timeLeft }) }}
-    </template>
-    <template v-else>
-      <button @click="markDone">{{ $t("game.done_for_today") }}</button>
-      {{ $t("game.time_left", { timeLeft }) }}
-    </template>
+    </div>
+    <div class="game-status">
+      <template v-if="game.done">
+        {{ $t("game.next_game_in", { timeLeft }) }}
+      </template>
+      <template v-else>
+        {{ $t("game.time_left", { timeLeft }) }}
+      </template>
+    </div>
   </li>
 </template>
 
 <style scoped>
-.game-item {
-  display: inline-flex;
+.game-container {
+  margin-bottom: 0.5em;
+  background-color: var(--bg-darker);
+}
+
+.game-main {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.game-name-link {
+  flex: 1;
+}
+
+.game-name {
+  display: flex;
   align-items: center;
   gap: 1em;
   padding: 0.5em;
@@ -59,5 +87,20 @@ const timeLeft = computed(() => countdown(
 
 .game-title {
   flex: 1;
+  line-height: 1.5;
 }
+
+.game-actions-main {
+  flex: 0;
+  padding: 1em;
+}
+
+.game-status {
+  flex: 1 0;
+  padding: 1em;
+  font-size: 0.9em;
+  color: hsl(210, 16%, 75%);
+  text-align: right;
+}
+
 </style>

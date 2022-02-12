@@ -16,10 +16,8 @@ onMounted(() => {
 
 <template>
   <div>
+    <LocaleSwitcher />
     <GameList />
-    <div>
-      <LocaleSwitcher />
-    </div>
   </div>
 </template>
 

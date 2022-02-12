@@ -28,9 +28,9 @@ const timeLeft = useTimer(props.game.nextReset);
       ✅
     </template>
     <template v-else>
-      <button @click="markDone">Done for today</button>
+      <button @click="markDone">{{ $t("game.done_for_today") }}</button>
     </template>
-    {{ timeLeft }} left
+    {{ $t("game.time_left", { timeLeft }) }}
   </li>
 </template>
 

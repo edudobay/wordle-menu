@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone'; // dependent on utc plugin
 import { markRaw } from 'vue';
-import { Timer } from './utils/timer';
+import { fastTicker, Timer } from './utils/timer';
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -32,6 +32,24 @@ function calculateNextReset(game, now) {
   return reset.tz(); // Back to local time
 }
 
+function timerOptions() {
+  const options = {};
+
+  if (! import.meta.env.DEV) {
+    return options;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+
+  options.timerInterval = params.get('tickInterval');
+  const tickAmount = params.get('tickAmount');
+  if (tickAmount) {
+    options.ticker = fastTicker(tickAmount);
+  }
+
+  return options;
+}
+
 export const useStore = defineStore('main', {
   state: () => ({
     gameStatus: Object.fromEntries(gameIds.map((id) => [id, {}])),
@@ -54,7 +72,10 @@ export const useStore = defineStore('main', {
   },
   actions: {
     startTimer() {
-      return markRaw(new Timer((now) => this.updateTime(now)));
+      return markRaw(new Timer(
+        (now) => this.updateTime(now),
+        timerOptions(),
+      ));
     },
     markDone(game) {
       // TODO: Persist in local storage

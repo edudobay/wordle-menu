@@ -39,27 +39,42 @@ function closeToZero(value, unit, threshold) {
 export class Timer {
   /**
    * @param {function(dayjs.Dayjs)} callback
+   * @param {{
+   *     ticker?: function():dayjs.Dayjs,
+   *     timerInterval?: number,
+   * }} options
    */
-  constructor(callback) {
+  constructor(callback, options = {}) {
     /** @param {dayjs.Dayjs} now */
     const tick = (now) => {
       callback(now)
 
       if (closeToZero(now.millisecond(), 'millisecond', 100) && closeToZero(now.second(), 'second', 1)) {
-        this.minuteTimer.start();
+        this.timer.start();
       } else {
         const remainingMs = now.endOf('minute').diff(now, 'millisecond')
         setTimeout(ticker, remainingMs);
-        this.minuteTimer.stop();
+        this.timer.stop();
       }
     }
 
-    const ticker = () => tick(dayjs());
-    this.minuteTimer = new SwitchableTimer(ticker, 60000);
+    const ticker = () => tick((options.ticker || dayjs)());
+    const interval = options.timerInterval || 60000; // 1 minute (overridable for testing/development)
+
+    this.timer = new SwitchableTimer(ticker, interval);
     ticker();
   }
 
   dispose() {
-    this.minuteTimer.stop();
+    this.timer.stop();
+  }
+}
+
+// For development.
+export function fastTicker(minutes, start = null) {
+  let time = start || dayjs();
+  return () => {
+    time = time.add(minutes, 'minute').startOf('minute');
+    return time;
   }
 }

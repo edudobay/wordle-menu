@@ -73,6 +73,11 @@ export const games = [
     lang: 'en',
     url: 'https://www.powerlanguage.co.uk/wordle/',
   },
+  {
+    name: 'WordleCAT',
+    lang: 'ca',
+    url: 'https://gelozp.com/games/wordle/',
+  },
 ];
 
 sortArray(games, { by: ['lang', 'name'] });

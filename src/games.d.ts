@@ -11,6 +11,7 @@ export interface GameData {
   url: string;
   name: string;
   resetTime?: ResetTime;
+  infinitePlay?: boolean;
 }
 
 export const games: Array<GameData>;

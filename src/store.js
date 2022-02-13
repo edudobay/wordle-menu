@@ -82,7 +82,12 @@ export const useStore = defineStore('main', {
       const gameStatus = state.gameStatus[game.url];
       const nextReset = calculateNextReset(game, state.now);
       const doneExpires = gameStatus.doneExpires;
-      const done = gameStatus.done && doneExpires != null && ! doneExpires.isBefore(nextReset);
+      const done = (
+        gameStatus.done
+        && ! game.infinitePlay
+        && doneExpires != null
+        && ! doneExpires.isBefore(nextReset)
+      );
 
       return {
         ...game,
@@ -100,6 +105,7 @@ export const useStore = defineStore('main', {
       ));
     },
     markDone(game) {
+      if (game.infinitePlay) return;
       this.setGameStatus(game.url, {
         done: true,
         doneExpires: game.nextReset,

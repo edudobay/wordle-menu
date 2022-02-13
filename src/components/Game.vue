@@ -37,7 +37,7 @@ const timeLeft = computed(() => countdown(
           ✅
         </span>
         <button
-          v-if="!game.done"
+          v-if="!game.done && !game.infinitePlay"
           @click="markDone"
         >
           {{ $t("game.done_for_today") }}
@@ -48,8 +48,11 @@ const timeLeft = computed(() => countdown(
       <template v-if="game.done">
         {{ $t("game.next_game_in", { timeLeft }) }}
       </template>
-      <template v-else>
+      <template v-else-if="!game.infinitePlay">
         {{ $t("game.time_left", { timeLeft }) }}
+      </template>
+      <template v-if="game.infinitePlay">
+        {{ $t("game.infinite_play") }}
       </template>
     </div>
   </li>

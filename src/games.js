@@ -55,6 +55,7 @@ export const games = [
     lang: 'pt',
     country: 'BR',
     url: 'https://charada.app/',
+    infinitePlay: true,
   },
   {
     name: 'Palavra do dia',

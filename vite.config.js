@@ -8,7 +8,8 @@ export default defineConfig({
   plugins: [
     vue(),
     vueI18n({
-      include: path.resolve(__dirname, './src/translations/**'),
+      include: path.resolve(__dirname, './src/translations/messages-*'),
+      runtimeOnly: false,
     }),
   ],
 });

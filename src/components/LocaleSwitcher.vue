@@ -1,6 +1,6 @@
 <script setup>
 import { inject, ref } from 'vue';
-import { locales as availableLocales } from '../translations';
+import { localeNames as availableLocales } from '../translations';
 import { useI18n } from 'vue-i18n';
 
 const i18n = useI18n({ useScope: 'global' });

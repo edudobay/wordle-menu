@@ -1,19 +1,18 @@
 import { createI18n } from 'vue-i18n';
 import messages_en from './messages-en';
 import messages_pt_BR from './messages-pt-BR';
-import { nextTick } from 'vue';
 import countdownTranslation from './countdownTranslation';
+import { mapEntryValues } from '../utils/objectEntries';
 
 export const locales = {
-  'en': 'English',
-  'pt-BR': 'Português (BR)',
+  'en': { name: 'English', messages: messages_en },
+  'pt-BR': { name: 'Português (BR)', messages: messages_pt_BR },
 };
 
-// Other languages are lazy-loaded
-const preloadedMessages = {
-  'en': messages_en,
-  'pt-BR': messages_pt_BR,
-};
+/** @type {Object<string, string>} */
+export const localeNames = mapEntryValues(locales, ({ name }) => name);
+
+const localeMessages = mapEntryValues(locales, ({ messages }) => messages);
 
 const fallbackLocale = 'en';
 
@@ -32,23 +31,12 @@ class LanguageSelector {
     this.saveUserPreference(locale);
   }
 
-  async loadMessages(locale) {
-    const messages = await import(`./messages-${locale}.js`);
-    this.i18n.global.setLocaleMessage(locale, messages.default);
-
-    return nextTick()
-  }
-
-  async setI18nLanguage(locale) {
+  setI18nLanguage(locale) {
     if (!isLanguageSupported(locale)) {
       throw new Error(`Nonexistent locale requested: ${locale}`);
     }
 
     const i18n = this.i18n;
-    if (!i18n.global.availableLocales.includes(locale)) {
-      await this.loadMessages(locale);
-    }
-
     if (i18n.mode === 'legacy') {
       i18n.global.locale = locale;
     } else {
@@ -62,7 +50,7 @@ class LanguageSelector {
     window.localStorage.setItem('language', locale);
   }
 
-  async loadUserPreference() {
+  loadUserPreference() {
     /** @type {string|null} */
     const appPreferencesLocale = window.localStorage.getItem('language');
 
@@ -71,7 +59,7 @@ class LanguageSelector {
       || window.navigator.languages.find((language) => isLanguageSupported(language))
       || fallbackLocale;
 
-    await this.setI18nLanguage(locale);
+    this.setI18nLanguage(locale);
   }
 }
 
@@ -82,11 +70,11 @@ export default {
       globalInjection: true,
       locale: fallbackLocale,
       fallbackLocale,
-      messages: preloadedMessages,
+      messages: localeMessages,
     });
 
     const languageSelector = new LanguageSelector(i18n);
-    languageSelector.loadUserPreference().then();
+    languageSelector.loadUserPreference();
 
     app.use(i18n);
 

@@ -1,3 +1,5 @@
+@import url(modal.css);
+
 :root {
     --white: #ffffff;
     --bg: #2c3e50;
@@ -22,4 +24,10 @@ a:visited {
 
 #app {
     padding: 1em;
+}
+
+.icon-button {
+    background-color: rgb(0, 0, 0, 0.4);
+    color: inherit;
+    border: none;
 }

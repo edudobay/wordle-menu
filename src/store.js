@@ -60,10 +60,10 @@ class GameStatusStorage {
   }
 
   /**
-   * @param {string[]} languages
+   * @param {Set<string>} languages
    */
   saveHiddenLanguages(languages) {
-    this.storage.setItem('hiddenLanguages', JSON.stringify(languages));
+    this.storage.setItem('hiddenLanguages', JSON.stringify([...languages]));
   }
 
   getStatusForGame(id) {
@@ -86,11 +86,13 @@ export const useStore = defineStore('main', {
     gameStatus: Object.fromEntries(gameIds.map(
       (id) => [id, storage.getStatusForGame(id)]
     )),
-    hiddenLanguages: new Set(),
+    hiddenLanguages: storage.hiddenLanguages(),
     now: dayjs(),
   }),
   getters: {
-    games: (state) => games.map((game) => {
+    games: (state) => games
+      .filter((game) => !state.hiddenLanguages.has(game.lang))
+      .map((game) => {
       const gameStatus = state.gameStatus[game.url];
       const nextReset = calculateNextReset(game, state.now);
       const doneExpires = gameStatus.doneExpires;
@@ -108,6 +110,7 @@ export const useStore = defineStore('main', {
         done,
       };
     }),
+    isLanguageHidden: (state) => (language) => state.hiddenLanguages.has(language),
   },
   actions: {
     startTimer() {
@@ -122,6 +125,9 @@ export const useStore = defineStore('main', {
         done: true,
         doneExpires: game.nextReset,
       });
+    },
+    setLanguageHidden(language, hidden) {
+      hidden ? this.hideLanguage(language) : this.unhideLanguage(language);
     },
     hideLanguage(language) {
       this.hiddenLanguages.add(language);

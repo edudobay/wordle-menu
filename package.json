@@ -10,11 +10,13 @@
   "dependencies": {
     "countdown": "https://github.com/mckamey/countdownjs.git#master",
     "dayjs": "^1.10.7",
+    "micromodal": "^0.4.10",
     "pinia": "^2.0.11",
     "reset-css": "^5.0.1",
     "sort-array": "^4.1.5",
     "vue": "^3.2.25",
-    "vue-i18n": "^9.1.9"
+    "vue-i18n": "^9.1.9",
+    "vue-material-design-icons": "^5.0.0"
   },
   "devDependencies": {
     "@intlify/vite-plugin-vue-i18n": "^3.3.0",

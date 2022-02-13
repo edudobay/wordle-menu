@@ -1,7 +1,9 @@
 <script setup>
-import { computed, defineEmits, defineProps } from 'vue';
+import { computed, defineEmits, defineProps, reactive } from 'vue';
 import { useStore } from '../store';
 import countdown from 'countdown';
+import DotsIcon from 'vue-material-design-icons/DotsHorizontal.vue';
+import GameOptionsMenu from './GameOptionsMenu.vue';
 
 const store = useStore()
 const props = defineProps({
@@ -17,6 +19,14 @@ const timeLeft = computed(() => countdown(
   countdown.HOURS | countdown.MINUTES,
   1
 ).toString());
+
+const cssVar = (name) => getComputedStyle(document.documentElement).getPropertyValue(name);
+
+const modal = reactive({ open: false });
+function openModal() {
+  modal.open = true;
+}
+
 </script>
 
 <template>
@@ -54,7 +64,13 @@ const timeLeft = computed(() => countdown(
       <template v-if="game.infinitePlay">
         {{ $t("game.infinite_play") }}
       </template>
+
+      <button class="icon-button more-options" @click="openModal">
+        <DotsIcon :title="$t('game.more_options_button')" />
+      </button>
     </div>
+
+    <GameOptionsMenu :game="game" :modal="modal" />
   </li>
 </template>
 
@@ -106,4 +122,7 @@ const timeLeft = computed(() => countdown(
   text-align: right;
 }
 
+.more-options {
+  margin-left: 0.75em;
+}
 </style>

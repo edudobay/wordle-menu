@@ -8,6 +8,12 @@ export const locales = {
   'pt-BR': 'Português (BR)',
 };
 
+const fallbackLocale = 'en';
+
+function isLanguageSupported(locale) {
+  return locale in locales;
+}
+
 class LanguageSelector {
   /** @param {I18n} i18n */
   constructor(i18n) {
@@ -29,8 +35,7 @@ class LanguageSelector {
   }
 
   async setI18nLanguage(locale) {
-    console.log('setting locale:', locale);
-    if (!locale in locales) {
+    if (!isLanguageSupported(locale)) {
       throw new Error(`Nonexistent locale requested: ${locale}`);
     }
 
@@ -53,8 +58,15 @@ class LanguageSelector {
   }
 
   async loadUserPreference() {
-    const defaultLocale = window.localStorage.getItem('language') || 'en';
-    await this.setI18nLanguage(defaultLocale);
+    /** @type {string|null} */
+    const appPreferencesLocale = window.localStorage.getItem('language');
+
+    const locale =
+      appPreferencesLocale
+      || window.navigator.languages.find((language) => isLanguageSupported(language))
+      || fallbackLocale;
+
+    await this.setI18nLanguage(locale);
   }
 }
 
@@ -66,8 +78,8 @@ export default {
     const i18n = createI18n({
       legacy: false,
       globalInjection: true,
-      locale: 'en',
-      fallbackLocale: 'en',
+      locale: fallbackLocale,
+      fallbackLocale,
       messages,
     });
 

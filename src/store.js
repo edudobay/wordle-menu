@@ -55,6 +55,17 @@ class GameStatusStorage {
     this.storage = window.localStorage;
   }
 
+  hiddenLanguages() {
+    return new Set(JSON.parse(this.storage.getItem('hiddenLanguages') || '[]'));
+  }
+
+  /**
+   * @param {string[]} languages
+   */
+  saveHiddenLanguages(languages) {
+    this.storage.setItem('hiddenLanguages', JSON.stringify(languages));
+  }
+
   getStatusForGame(id) {
     const status = JSON.parse(this.storage.getItem(`gameStatus:${id}`) || '{}');
     if (status.doneExpires) {
@@ -75,6 +86,7 @@ export const useStore = defineStore('main', {
     gameStatus: Object.fromEntries(gameIds.map(
       (id) => [id, storage.getStatusForGame(id)]
     )),
+    hiddenLanguages: new Set(),
     now: dayjs(),
   }),
   getters: {
@@ -110,6 +122,14 @@ export const useStore = defineStore('main', {
         done: true,
         doneExpires: game.nextReset,
       });
+    },
+    hideLanguage(language) {
+      this.hiddenLanguages.add(language);
+      storage.saveHiddenLanguages(this.hiddenLanguages);
+    },
+    unhideLanguage(language) {
+      this.hiddenLanguages.delete(language);
+      storage.saveHiddenLanguages(this.hiddenLanguages);
     },
     setGameStatus(id, status) {
       status = Object.assign(this.gameStatus[id], status);

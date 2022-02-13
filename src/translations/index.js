@@ -1,11 +1,18 @@
 import { createI18n } from 'vue-i18n';
-import messagesEn from './messages-en';
+import messages_en from './messages-en';
+import messages_pt_BR from './messages-pt-BR';
 import { nextTick } from 'vue';
 import countdownTranslation from './countdownTranslation';
 
 export const locales = {
   'en': 'English',
   'pt-BR': 'Português (BR)',
+};
+
+// Other languages are lazy-loaded
+const preloadedMessages = {
+  'en': messages_en,
+  'pt-BR': messages_pt_BR,
 };
 
 const fallbackLocale = 'en';
@@ -26,8 +33,6 @@ class LanguageSelector {
   }
 
   async loadMessages(locale) {
-    if (locale === 'en') return;
-
     const messages = await import(`./messages-${locale}.js`);
     this.i18n.global.setLocaleMessage(locale, messages.default);
 
@@ -72,15 +77,12 @@ class LanguageSelector {
 
 export default {
   install: (app, options) => {
-    // Other languages are lazy-loaded
-    const messages = {'en': messagesEn};
-
     const i18n = createI18n({
       legacy: false,
       globalInjection: true,
       locale: fallbackLocale,
       fallbackLocale,
-      messages,
+      messages: preloadedMessages,
     });
 
     const languageSelector = new LanguageSelector(i18n);

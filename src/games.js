@@ -5,13 +5,13 @@ import sortArray from 'sort-array';
 
 export const games = [
   {
-    name: 'Wordle auf Deutsch - Das Original',
+    name: 'Wördl',
     lang: 'de',
     country: 'AT',
     url: 'https://wordle.at/',
   },
   {
-    name: 'Wordle auf Deutsch - wordle-spielen.de',
+    name: 'Wordle-Spielen.de',
     lang: 'de',
     url: 'https://wordle.uber.space/',
   },
@@ -79,6 +79,13 @@ export const games = [
     lang: 'ca',
     url: 'https://gelozp.com/games/wordle/',
   },
+  { name: 'WordleGame', lang: 'en', url: 'https://wordlegame.org/', infinitePlay: true },
+  { name: 'WordleGame en Français', lang: 'fr', url: 'https://wordlegame.org/wordle-in-french', infinitePlay: true },
+  { name: 'WordleGame auf Deutsch', lang: 'de', url: 'https://wordlegame.org/wordle-in-german', infinitePlay: true },
+  { name: 'WordleGame en Español', lang: 'es', url: 'https://wordlegame.org/wordle-in-spanish', infinitePlay: true },
+  { name: 'WordleGame em Português', lang: 'pt', url: 'https://wordlegame.org/wordle-in-portuguese', infinitePlay: true },
+  { name: 'WordleGame in Italiano', lang: 'it', url: 'https://wordlegame.org/wordle-in-italian', infinitePlay: true },
+  { name: 'WordleGame на Русском', lang: 'ru', url: 'https://wordlegame.org/wordle-in-russian', infinitePlay: true },
 ];
 
 sortArray(games, { by: ['lang', 'name'] });

@@ -18,6 +18,7 @@ export const games = [
   { name: 'Wordle', lang: 'en', url: 'https://www.nytimes.com/games/wordle/index.html' },
   { name: 'WordleCAT', lang: 'ca', url: 'https://gelozp.com/games/wordle/' },
   { name: 'WordleGame', lang: 'en', url: 'https://wordlegame.org/', infinitePlay: true },
+  { name: 'Quordle', lang: 'en', url: 'https://www.quordle.com/' },
   { name: 'WordleGame en Français', lang: 'fr', url: 'https://wordlegame.org/wordle-in-french', infinitePlay: true },
   { name: 'WordleGame auf Deutsch', lang: 'de', url: 'https://wordlegame.org/wordle-in-german', infinitePlay: true },
   { name: 'WordleGame en Español', lang: 'es', url: 'https://wordlegame.org/wordle-in-spanish', infinitePlay: true },

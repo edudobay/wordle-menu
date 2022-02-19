@@ -15,7 +15,7 @@ export const games = [
   { name: 'Charada', lang: 'pt', country: 'BR', url: 'https://charada.app/', infinitePlay: true },
   { name: 'Palavra do dia', lang: 'pt', country: 'PT', url: 'https://palavra-do-dia.pt/' },
   { name: 'Wordle (RU)', lang: 'ru', url: 'https://wordle.belousov.one/', resetTime: { timeZone: 'UTC' } },
-  { name: 'Wordle', lang: 'en', url: 'https://www.powerlanguage.co.uk/wordle/' },
+  { name: 'Wordle', lang: 'en', url: 'https://www.nytimes.com/games/wordle/index.html' },
   { name: 'WordleCAT', lang: 'ca', url: 'https://gelozp.com/games/wordle/' },
   { name: 'WordleGame', lang: 'en', url: 'https://wordlegame.org/', infinitePlay: true },
   { name: 'WordleGame en Français', lang: 'fr', url: 'https://wordlegame.org/wordle-in-french', infinitePlay: true },

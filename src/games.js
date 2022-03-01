@@ -5,7 +5,7 @@ import sortArray from 'sort-array';
 
 export const games = [
   { name: 'Wördl', lang: 'de', country: 'AT', url: 'https://wordle.at/' },
-  { name: 'Wordle-Spielen.de', lang: 'de', url: 'https://wordle.uber.space/' },
+  { name: '6mal5.com', lang: 'de', url: 'https://www.6mal5.com/' },
   { name: 'Le Mot - Wordle en français', lang: 'fr', url: 'https://wordle.louan.me/', resetTime: { timeZone: 'Europe/Berlin' } },
   { name: 'Wordle (ES)', lang: 'es', url: 'https://wordle.danielfrg.com/', resetTime: { timeZone: 'America/New_York' } },
   { name: 'PAR🇮🇹LE', lang: 'it', url: 'https://pietroppeter.github.io/wordle-it/' },

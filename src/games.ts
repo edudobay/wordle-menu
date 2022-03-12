@@ -1,9 +1,31 @@
-/**
- * @type {[GameData]}
- */
 import sortArray from 'sort-array';
 
-export const games = [
+type TimezoneOffsetInMinutes = number;
+
+export enum GameCategory {
+  WordGame = "WordGame",
+  Other = "Other",
+}
+
+interface ResetTime {
+  localTime?: TimezoneOffsetInMinutes;
+  timeZone?: string;
+}
+
+export interface GameData {
+  url: string;
+  name: string;
+  resetTime?: ResetTime;
+  infinitePlay?: boolean;
+  category?: GameCategory;
+}
+
+export interface WordGameData extends GameData {
+  lang: string;
+  country?: string;
+}
+
+export const games: Array<GameData | WordGameData> = [
   { name: 'Wördl', lang: 'de', country: 'AT', url: 'https://wordle.at/' },
   { name: '6mal5.com', lang: 'de', url: 'https://www.6mal5.com/' },
   { name: 'Le Mot - Wordle en français', lang: 'fr', url: 'https://wordle.louan.me/', resetTime: { timeZone: 'Europe/Berlin' } },
@@ -25,6 +47,7 @@ export const games = [
   { name: 'WordleGame em Português', lang: 'pt', url: 'https://wordlegame.org/wordle-in-portuguese', infinitePlay: true },
   { name: 'WordleGame in Italiano', lang: 'it', url: 'https://wordlegame.org/wordle-in-italian', infinitePlay: true },
   { name: 'WordleGame на Русском', lang: 'ru', url: 'https://wordlegame.org/wordle-in-russian', infinitePlay: true },
+  { name: 'Worldle', url: 'https://worldle.teuteuf.fr/', category: GameCategory.Other },
 ];
 
-sortArray(games, { by: ['lang', 'name'] });
+sortArray(games, { by: ['category', 'lang', 'name'] });
